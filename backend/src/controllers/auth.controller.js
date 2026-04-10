@@ -1,6 +1,8 @@
 const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const dotenv = require("dotenv");
+dotenv.config();
 
 async function registerUser(req, res) {
     
@@ -44,7 +46,6 @@ async function loginUser(req, res){
     }
     // Example using bcrypt
 
-
     const user = await User.findOne({
         email: email            
     })
@@ -59,9 +60,7 @@ async function loginUser(req, res){
             message: "invalid credentials"
         })
     }
-    const token = jwt.sign({
-        id: user._id
-    }, process.env.SCRETE_KEY, {
+    const token = jwt.sign({id: user._id}, process.env.SCRETE_KEY, {
         expiresIn: "3d"
     })
     res.cookie("token", token)
