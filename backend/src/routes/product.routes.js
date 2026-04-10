@@ -2,10 +2,13 @@ const router = require('express').Router()
 const controller = require('../controllers/product.controller.js')
 const cartController = require('../controllers/cart.controller.js')
 const authMiddleware = require('../middleware/auth.middleware.js')
+
 router.post('/products', controller.createProduct)
 router.get('/products', controller.getProducts)
 router.get('/products/:id', controller.getProductById)
 router.put('/products/:id', controller.updateProduct)
 router.delete('/products/:id', controller.deleteProduct)
 router.post('/cart', authMiddleware, cartController.addToCart)
+router.get('/cart', authMiddleware, cartController.getCart)
+router.put('/cart/:productId', authMiddleware, cartController.updateQuantity)
 module.exports = router;

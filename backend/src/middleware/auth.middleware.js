@@ -20,9 +20,7 @@ async function authMiddleware(req, res, next) {
         // 4. Save user
         req.user = decoded;
 
-        console.log("TOKEN:", token);
-        console.log("DECODED:", decoded);
-
+        
         next();
     } catch (error) {
         console.log("JWT ERROR:", error.message);
