@@ -24,7 +24,7 @@ async function authMiddleware(req, res, next) {
         console.log("JWT ERROR:", error.message);
 
         return res.status(401).json({
-            message: "Invalid token hai"
+            message: "Invalid token "
         });
     }
 }
