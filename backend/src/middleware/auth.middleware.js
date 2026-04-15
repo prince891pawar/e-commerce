@@ -18,9 +18,7 @@ async function authMiddleware(req, res, next) {
         const decoded = jwt.verify(token, process.env.SCRETE_KEY);
 
         // 4. Save user
-        req.user = decoded;
-
-        
+        req.user = decoded;        
         next();
     } catch (error) {
         console.log("JWT ERROR:", error.message);

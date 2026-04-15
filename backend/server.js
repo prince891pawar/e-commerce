@@ -4,6 +4,7 @@ const connectDB = require('./src/config/db.js')
 const dotenv = require('dotenv')
 const userRoutes = require('./src/routes/user.routes.js')
 const productRoutes = require('./src/routes/product.routes.js')
+const orderRoutes = require('./src/routes/order.routes.js')
 
 dotenv.config() 
 
@@ -15,6 +16,7 @@ app.use(express.json())
 
 app.use('/api/user', userRoutes)
 app.use('/api', productRoutes)
+app.use('/api/', orderRoutes)
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000")
