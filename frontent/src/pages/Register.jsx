@@ -1,8 +1,9 @@
 import { useState } from "react";
 import API from "../services/api";
 
-function Login() {
+function Register() {
   const [form, setForm] = useState({
+    name: "",
     email: "",
     password: "",
   });
@@ -11,31 +12,28 @@ function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     try {
-      const res = await API.post("/user/login", form);
-
-      // 🔥 TOKEN SAVE
-      localStorage.setItem("token", res.data.token);
-
-      alert("Login Success ✅");
+      const res = await API.post("/user/register", form);
+      alert("Registered Successfully ✅");
       console.log(res.data);
     } catch (error) {
       console.log(error);
-      alert("Login Failed ❌");
+      alert("Error ❌");
     }
   };
 
   return (
     <div>
-      <h2>Login</h2>
+      <h2>Register</h2>
 
+      <input name="name" placeholder="Name" onChange={handleChange} />
       <input name="email" placeholder="Email" onChange={handleChange} />
       <input name="password" placeholder="Password" onChange={handleChange} />
 
-      <button onClick={handleLogin}>Login</button>
+      <button onClick={handleRegister}>Register</button>
     </div>
   );
 }
 
-export default Login;
+export default Register;

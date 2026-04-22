@@ -7,13 +7,14 @@ const userRoutes = require('./src/routes/user.routes.js')
 const productRoutes = require('./src/routes/product.routes.js')
 const orderRoutes = require('./src/routes/order.routes.js')
 
+
 dotenv.config()
 
 const app = express()
 
 app.use(cors({
-  origin: true,
-  credentials: true,
+  origin: "*",
+
 }));
 
 app.use(express.json())

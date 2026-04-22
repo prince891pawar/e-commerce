@@ -1,57 +1,87 @@
 import { useEffect, useState } from "react";
-import API from "../services/api"; 
-
-function Home(){
-    const [products, setProducts] = useState([])
-
-useEffect(() => {
-  fetch("http://127.0.0.1:3000/api/products")
-    .then(res => res.json())
-    .then(data => {
-      console.log("DATA:", data);
-      setProducts(data.products);
-    })
-    .catch(err => console.log("ERROR:", err));
-}, []);
+import API from "../services/api";
+import "tailwindcss";
+import { useNavigate } from "react-router-dom";
 
 
-    const handleAddToCart = async (productId) => {
-  try {
-    const res = await API.post("/cart", {
-      productId: productId,
-      quantity: 1
-    });
-    console.log(res.data);
-    alert("Added to cart ✅");
-  } catch (error) {
-    console.log(error);
-    alert("Error adding to cart ❌");
-  }
-};
+function Home() {
+  const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
 
-    return <div style={{ display: "flex", flexWrap: "wrap", gap: "20px", padding: "20px" }}>
-  {products.map((item) => (
-    <div
-      key={item._id}
-      style={{
-        border: "1px solid #ccc",
-        padding: "15px",
-        width: "200px",
-        borderRadius: "10px",
-        background: "#fff",
-        color: "#000"
-      }}
-    >
-      <h3>{item.name}</h3>
-      <p>{item.description}</p>
-      <p>₹{item.price}</p>
-       <button onClick={() => handleAddToCart(item._id)}>
-  Add to Cart
-</button>
+  useEffect(() => {
+    fetch("http://localhost:5173/api/products")
+      .then(res => res.json())
+      .then(data => {
+        setProducts(data.products);
+      })
+      .catch(err => console.log("ERROR:", err));
+  }, []);
+
+  const handleAddToCart = async (productId) => {
+    try {
+      await API.post("/cart", {
+        productId,
+        quantity: 1
+      });
+      alert("Added to cart ✅");
+    } catch (error) {
+      alert("Error adding to cart ❌");
+    }
+  };
+
+  return (
+    <div className="bg-gray-100 min-h-screen p-6">
+      
+      {/* Heading */}
+     <divc className="flex content-center gap-10 mb-8 align-center w-full">
+       <h1 className="text-3xl font-bold text-center mb-8">
+        🛒 Our Products
+      </h1>
+      <h1 onClick={() => navigate("/cart")} className="text-2xl cursor-pointer font-bold text-center mb-8">
+        🛒 My Cart
+      </h1>
+     </divc>
+
+      {/* Product Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        
+        {products.map((item) => (
+          <div
+            key={item._id}
+            className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-4 flex flex-col"
+          >
+            
+            {/* Image (dummy placeholder if not available) */}
+            <div className="h-40 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
+              <span className="text-gray-500">No Image</span>
+            </div>
+
+            {/* Product Info */}
+            <h3 className="text-lg font-semibold mb-2">
+              {item.name}
+            </h3>
+
+            <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+              {item.description}
+            </p>
+
+            <p className="text-xl font-bold text-green-600 mb-4">
+              ₹{item.price}
+            </p>
+
+            {/* Button */}
+            <button
+              onClick={() => handleAddToCart(item._id)}
+              className="mt-auto bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition transform hover:scale-105"
+            >
+              Add to Cart
+            </button>
+          </div>
+        ))}
+
+      </div>
     </div>
-  ))}
-
-</div>
+  );
 }
 
 export default Home;

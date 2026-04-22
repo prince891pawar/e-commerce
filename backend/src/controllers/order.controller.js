@@ -53,6 +53,22 @@ async function placeOrder(req, res) {
   }
 }
 
+const getUserOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({ userId: req.user.id })
+      .populate("products.productId");
+
+    res.status(200).json({
+      message: "Orders fetched",
+      orders,
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 async function OrderHistory(req, res){
   const userId = req.user.id; 
 
@@ -117,6 +133,7 @@ async function updateOrderStatus(req, res) {
 
 module.exports = {
     placeOrder,
+    getUserOrders,
     OrderHistory,
     getAllOrders,
     updateOrderStatus
